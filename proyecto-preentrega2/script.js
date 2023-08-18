@@ -19,6 +19,24 @@ const validarNombreMascota = () => {
     }
 }
 
+// Función que filtra por seccion 
+const filtrarPorSeccion = (seccion) => {
+    const resultadoFiltro = productos.filter(
+        (producto) => {
+            return producto.seccion === seccion
+        }
+    )
+
+    const productosFiltrados = resultadoFiltro.reduce(
+        (acumulador, elemento) => {
+            return `${acumulador}${elemento.id} ${elemento.nombre} ${elemento.precio}\n`
+        },
+        "")
+
+    alert(productosFiltrados)
+}
+
+
 const productos = [
     {
         nombre: "collar rojo",
@@ -34,7 +52,7 @@ const productos = [
     },
     {
         nombre: "cama azul",
-        seccion: "cama",
+        seccion: "camas",
         precio: "$80.000",
         id: "3"
     },
@@ -62,18 +80,18 @@ let contraseñaIngresada = prompt("Ingresa la contraseña")
 const contraseña = "123"
 
 //validación de la contraseña.
-if (contraseñaIngresada !== contraseña){
-    for (let i=2; i > 0; i--){
+if (contraseñaIngresada !== contraseña) {
+    for (let i = 2; i > 0; i--) {
         alert(`Ingresa una contraseña válida. Te quedan ${i} intentos`)
         contraseñaIngresada = prompt("Ingresa la contraseña")
-        if (contraseñaIngresada === contraseña){
+        if (contraseñaIngresada === contraseña) {
             alert(`Bienvenid@ ${nombreUsuario}`)
             break
         }
     }
 }
 
-if (contraseñaIngresada !== contraseña){
+if (contraseñaIngresada !== contraseña) {
     alert("Cuenta bloqueada 😜")
 }
 else {
@@ -93,30 +111,61 @@ else {
         validarNombreMascota()
 
         alert(`Bienvenidos ${nombreUsuario} y ${nombreMascota}!`)
-        
+
         //Menú de opciones nuevo ;) 
         let menu = prompt(`Elige una de las siguientes opciones:\n
         1. Ver lista de productos\n 
-        2. Filtrar por categoría \n
+        2. Filtrar por sección \n
         3. Ver información de un producto\n`
         )
 
-        switch(menu){
-            case"1":
+        switch (menu) {
+            case "1":
+                // Lista de productos
                 const todosProductos = productos.reduce((acumulador, elemento) => {
-                    return `${acumulador}${elemento.id} ${elemento.nombre}\n`  
+                    return `${acumulador}${elemento.id} ${elemento.nombre}\n`
                 }, "")
-                    alert(todosProductos)
-                //Lista de productos  
+                alert(todosProductos)
                 break
-            case"2":
+            case "2":
                 //Filtrar
+                let seccion = prompt(`Elige qué sección deseas ver:\n
+                    1- Collares\n
+                    2- Camas\n
+                    3- Pelotas\n`)
+
+                switch (seccion) {
+                    case "1":
+                        //filtra sección collares
+                        filtrarPorSeccion("collares")
+                        break
+                    case "2":
+                        filtrarPorSeccion("camas")
+                        break
+                    case "3":
+                        filtrarPorSeccion("pelotas")
+                        break
+                    default:
+                        alert("Por favor elige una opción válida")
+                        break
+                }
                 break
-            case"3": 
+            case "3":
                 //ver información de un producto 
+                let idProducto = prompt("Por favor inserta el ID del producto que deseas ver")
+                const productoEncontrado = productos.find((producto) => {
+                    return producto.id === idProducto
+                })
+                if (productoEncontrado === undefined) {
+                    alert("Producto no encontrado, por favor colocar ID correcto")
+                }
+                else {
+                    alert(`${productoEncontrado.id} ${productoEncontrado.nombre} ${productoEncontrado.precio} ${productoEncontrado.seccion}`)
+                }
                 break
-            default: 
-            
+            default:
+                alert("Por favor elige una opción válida")
+                break
         }
     }
 }
